@@ -9,6 +9,9 @@ import { CustomersComponent } from './customers.component';
   imports: [
     CommonModule,
     CustomersRoutingModule
+  ],
+  exports: [
+    CustomersComponent
   ]
 })
 export class CustomersModule { }
