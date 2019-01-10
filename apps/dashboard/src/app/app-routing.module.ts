@@ -3,8 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '@workshop/ui-login';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '', loadChildren: './home/home.module#HomeModule' }, // lazy loading HomeModule when in root
+  { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule' },
+  { path: 'customers', loadChildren: './customers/customers.module#CustomersModule' },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

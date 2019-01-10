@@ -6,9 +6,6 @@ import { NxModule } from '@nrwl/nx';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@workshop/material';
-import { HomeModule } from './home/home.module';
-import { ProjectsModule } from './projects/projects.module';
-import { CustomersModule } from './customers/customers.module';
 import { AppRoutingModule } from './app-routing.module';
 import { UiLoginModule } from '@workshop/ui-login';
 
@@ -19,11 +16,9 @@ import { UiLoginModule } from '@workshop/ui-login';
     NxModule.forRoot(),
     BrowserAnimationsModule,
     MaterialModule,
-    AppRoutingModule,
-    HomeModule,
-    ProjectsModule,
-    CustomersModule,
-    UiLoginModule
+    // delete from here: HomeModule, ProjectsModule and CustomersModule bc they are lazy loaded
+    UiLoginModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
