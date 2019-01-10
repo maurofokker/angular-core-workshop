@@ -8,13 +8,18 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <!--
+        <pre>{{projects | json}}</pre>
+        -->
         <mat-list>
-          <mat-list-item>
+          <mat-list-item *ngFor="let project of projects">
             <h3 mat-line>
               <!-- PROJECT DETAILS -->
+              {{project.title}}
             </h3>
             <p mat-line>
               <!-- PROJECT DETAILS -->
+              {{project.details}}
             </p>
             <button mat-icon-button>
               <mat-icon>close</mat-icon>
