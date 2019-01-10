@@ -32,6 +32,8 @@ export class ProjectsComponent implements OnInit {
     }
   ];
 
+  primaryColorPropertyBinding = "Orange";
+
   selectedProject;
 
   constructor() { }

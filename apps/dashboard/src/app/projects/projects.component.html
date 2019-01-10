@@ -14,7 +14,7 @@
         <mat-list>
           <mat-list-item (click)="selectProject(project)"
             *ngFor="let project of projects">
-            <h3 mat-line>
+            <h3 [style.color]="primaryColorPropertyBinding" mat-line>
               <!-- PROJECT DETAILS -->
               {{project.title}}
             </h3>
