@@ -42,3 +42,61 @@ Lastly, please install the npm dependencies by running:
 npm install
 ```
 You are good to go!
+
+## Configuración de workspace y creación de aplicación dentro de él
+
+- La creación del workspace se hace con `create-nx-workspace angular-core-workshop` pero en este caso ya está creado (es el repo clonado)
+- Cambiar en archivo `nx.json` el nombre del npmScope a "workshop" (inicialmente es angular-core-workshop) 
+- Cambiar configuración de schematics en `angular.json` lo hace automaticamente al escribir:
+	`ng config schematics.@nrwl/schematics:component.styleext scss`
+
+- Crear una nueva app dentro del workspace
+  `$ ng g app dashboard --routing -p=app --style=scss --dry-run`
+  * `--routing` : permitirá agregar routing a la aplicación de manera instantanea, en una SPA no es necesario ponerlo por ejemplo
+  * `-p=app`: permite configurar el prefijo del selector (selector: 'app-componente')
+  * `--style=scss`: para poner estilos
+  * `--dry-run`: permite correr una simulación asi validar que nombres y ubicaciones están bien (tb se puede usar -d)
+- Una vez que se asegure que la configuración es la correcta se corre el comando sin --dry-run
+  * Generará un proyecto nuevo dentro del directorio `apps` del workspace. También generará un proyecto e2e asociado a la nueva aplicación
+  * El proyecto generado tendrá la estructura propia de una app angular
+  * El proyecto (app) será agregado a las dependencias del workspace dentro del archivo `nx.json` y `angular.json`
+- Dentro del workspace al hacer `npm start` iniciará la aplicación
+- Pasar lo que está en `RESOURCES` a style en `app/dashboard` y los `assets` (imagenes)
+
+## Angular material como modulo compartido en workspace
+
+- Agregar al repo angular material porque sino fallará en encontrar los componentes asociados en el style `ng add @angular/material`
+- Agregar angular material como un modulo en `libs` para que pueda ser importado por cada aplicación dentro del workspace en lugar de instalarlo
+  `$ ng g libs material` y seleccionar opciones por defecto
+  * Luego de que se creen los archivos en directorio `libs` y otros en `apps/dashboard` se debe modificar `./libs/material/src/index.ts` para que no exporte todo con *
+  `export { MaterialModule } from './libs/material.module'
+  * Editar archivo `material.module.ts` para importar modulos asociados a material que serán ocupados y también exportarlos
+  * Para utilizar esto desde una aplicación en el workspace, dentro del archivo `app.module.ts` de la aplicación se debe importar `MaterialModule` desde namespace del workspace (`import { MaterialModule } from '@workshop/material';`)
+
+## Creación de componentes UI
+
+* Primero crea una lib que tendrá lógica negocio compartida por aplicaciones locales del workspace
+	`ng g lib core-data -d` sacar el -d para que se escriba la generación
+* Crear lib que permita compartir en aplicaciones locales cosas asociadas al UI como un login, header, footer, etc
+	`ng g lib ui-login -p=ui`
+	`ng g lib ui-toolbar -p=ui`
+
+## Creación de componente con routing (feature components)
+
+Si se está generando un componente de tipo feature, que es un componente de nivel superior que contendrá cosas adicionales, se debe considerar algunas cosas:
+- habrá un route hacia este componente?
+- es este feature lo suficientemente distinto que garantiza su propio route (propia ruta)?
+Lo anterior calzaría con un componente feature (feature component) y cuando es así, lo ideal es primero generar un módulo y luego ponerlo en el componente. Ejemplo
+	`ng g m home --routing`: generará el módulo home pero también la habilidad de enrutar hacia él
+	`ng g c home`: ahora genera el componente
+
+- Generar feature projects
+	`ng g m projects --routing`: generará el módulo home pero también la habilidad de enrutar hacia él
+	`ng g c projects`: ahora genera el componente
+
+- Generar feature customers
+	`ng g m customers --routing`: generará el módulo home pero también la habilidad de enrutar hacia él
+	`ng g c customers`: ahora genera el componente
+
+* Se debe recordar importar los módulos creados en el scope de la aplicación dashboard o sea en archivo `app.module.ts`
+* Al usar los componentes en el padre `app.component.html` se debe considerar que los componentes se deben exportar dentro de su propio modulo `xxx.module.ts` ejemplo `home.module.ts` agregar como `exports`
