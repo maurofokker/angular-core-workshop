@@ -37,16 +37,19 @@
         <mat-card-title>
           <h1>
             <!-- PROJECT TITLE HERE -->
+            <span *ngIf="selectedProject; else elseBlock">{{selectedProject?.title}}</span>
+            <ng-template #elseBlock>Select a Project</ng-template>
           </h1>
         </mat-card-title>
       </mat-card-header>
       <form>
         <mat-card-content>
           <!-- PROJECT FORM HERE -->
+          <pre>{{selectedProject | json}}</pre>
         </mat-card-content>
         <mat-card-actions>
           <button type="submit" mat-button color="primary">Save</button>
-          <button type="button" mat-button>Cancel</button>
+          <button type="button" mat-button (click)="cancel()">Cancel</button>
         </mat-card-actions>
       </form>
     </mat-card>
