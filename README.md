@@ -145,3 +145,8 @@ To generate interfaces with `angular-cli`
     </mat-card-actions>
   </form>
   ```
+2. Material Forms
+   - [form fields](https://material.angular.io/components/form-field/overview)
+   - [form slider](https://material.angular.io/components/slider/overview)
+   - [form checkbox](https://material.angular.io/components/checkbox/overview)
+
