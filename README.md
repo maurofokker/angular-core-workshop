@@ -154,7 +154,26 @@ To generate interfaces with `angular-cli`
 
 * Problem until commit `81bd82f` is that when something is typed in the form (title and detail) it will update the form title and the project selected in the list of projects this is the shared mutable state problem.
   * You have for instance, and object in a service that you are passing by reference across two components, and component A need that this object can never go up to past 10, but then component B turn this object to 11... that is a problem
-* Solution: uso de arquitectura de componentes
+* Solution: Ver Arquitectura de componentes
+  - Si quieres compartir estado, que sea inmutable
+  - Si necesitas mutar estado, entonces aislalo para que no pueda ser compartido
+  - Creando un nuevo objeto a partir del que se desea mutar
+  ```typescript
+  export class ProjectDetailsComponent {
+
+    currentProject: Project;
+    originalTitle;
+
+    @Output() saved = new EventEmitter();
+    @Output() cancelled = new EventEmitter();
+
+    // using setter
+    @Input() set project(value) {
+      if (value) this.originalTitle = value.title;
+      this.currentProject = Object.assign({}, value)
+    }
+  }
+  ```
 
 
 ## Arquitectura de componentes
