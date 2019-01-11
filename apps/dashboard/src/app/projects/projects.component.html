@@ -13,7 +13,7 @@
         -->
         <mat-list>
           <mat-list-item (click)="selectProject(project)"
-            *ngFor="let project of projects">
+            *ngFor="let project of projects$ | async">
             <h3 [style.color]="primaryColorPropertyBinding" mat-line>
               <!-- PROJECT DETAILS -->
               {{project.title}}
