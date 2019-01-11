@@ -171,3 +171,87 @@ To generate interfaces with `angular-cli`
   * `ng g`: genera
   * `c`: componente
   * `projects/project-list`: dentro de directorio `projects` genera componente `project-list`
+
+### @Input()
+
+- Permite pasar data desde un componente padre `projects.component.ts` a uno hijo `projects-list.component.ts`
+- Utiliza el método `property binding`
+- Componente hijo `projects-list.component.ts`
+  ```typescript
+  @Component({
+  selector: 'app-projects-list',
+  templateUrl: './projects-list.component.html',
+  styleUrls: ['./projects-list.component.scss']
+  })
+  export class ProjectsListComponent implements OnInit {
+
+    // this is a property in this class that we are allowing external forces
+    // or mechanisms to basically satisfy this particular property
+    @Input() projects: Project[];
+    @Input() readonly = false;  
+
+    constructor() { }
+
+    ngOnInit() {
+    }
+
+  }
+  ```
+- Template hijo `projects-list.component.html`
+  ```html
+  <!-- <pre>{{projects | json}}</pre>  -->
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Projects</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!--
+      <pre>{{projects | json}}</pre>
+      -->
+      <mat-list>
+        <mat-list-item  *ngFor="let project of projects">
+          <h3  mat-line>
+            <!-- PROJECT DETAILS -->
+            {{project.title}}
+          </h3>
+          <p mat-line>
+            <!-- PROJECT DETAILS -->
+            {{project.details}}
+          </p>
+          <!-- after call deleteProject(project) it calls $event.stopImmediatePropagation() -->
+          <!-- bc if not it will bubble up and do the (click)="selectProject(project)" above in list -->
+          <button *ngIf="!readonly" mat-icon-button >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  ```
+- Componente padre `projects.component.ts`
+  ```typescript
+  @Component({
+  selector: 'app-projects',
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss']
+  })
+  export class ProjectsComponent implements OnInit {
+
+    // any property declaration is available to be bound to the template
+    // by convention observable streams use $ sufix
+    projects$; //: Observable<Project[]>;
+    // more code
+  }
+  ```
+- Template padre `projects.component.html` usando `property binding` hacia componente hijo (en `@Input()`)
+  ```html
+  <div class="container">
+    <!-- PROJECTS LIST -->
+    <div class="col-50">
+      <app-projects-list [projects]="projects$ | async"></app-projects-list>
+    </div>
+    <!-- PROJECT DETAILS -->
+  </div>
+  ```
