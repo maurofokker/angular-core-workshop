@@ -126,3 +126,22 @@ To generate interfaces with `angular-cli`
   `npm install concurrently --save-dev`
 - Script in `package.json`
   `"server:all": "concurrently \"npm run server\" \"ng serve\"",`
+
+## Forms
+
+1. Hook form in a submit
+  ```html
+  <form (submit)="saveProject(selectedProject)">
+    <mat-card-content>
+      <!-- PROJECT FORM HERE -->
+      <!-- <pre>{{selectedProject | json}}</pre> -->
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Title" [(ngModel)]="selectedProject.title" type="text" name="title">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button type="submit" mat-button color="primary">Save</button>
+      <button type="button" mat-button (click)="cancel()">Cancel</button>
+    </mat-card-actions>
+  </form>
+  ```

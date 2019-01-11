@@ -11,7 +11,7 @@ export class ProjectsComponent implements OnInit {
 
   // any property declaration is available to be bound to the template
   // by convention observable streams use $ sufix
-  projects$: Observable<Project[]>;
+  projects$; //: Observable<Project[]>;
 
   primaryColorPropertyBinding = "Orange";
 
@@ -36,7 +36,11 @@ export class ProjectsComponent implements OnInit {
   }
 
   cancel() {
-    this.selectProject(null);
+    this.resetProject();
+  }
+
+  saveProject(project) {
+    console.log('SAVING PROJECT', project);
   }
 
   deleteProject(project) {
@@ -44,11 +48,27 @@ export class ProjectsComponent implements OnInit {
       .subscribe(results => this.getProjects()); // rehydrate
   }
 
+  // this is bc when loading projects async you cant select something that
+  // that is not been loaded yet and the list of projects in template is not
+  // showing data until you select one of them and that will fill form too
+  // So list and form will be rendering bc is being initialized to an empty project using ngOnInit
+  resetProject() {
+    const emptyProject = {
+      id: null,
+      title: '',
+      details: '',
+      percentComplete: 0,
+      approved: false,
+    }
+    this.selectProject(emptyProject);
+  }
+
   // is fired when basically all of the data or
   // all of the bindings for a component has been satisfied
   // is the safest place to put something (async assingment?)
   ngOnInit() {
     this.getProjects();
+    this.resetProject();
   }
 
 }
