@@ -39,6 +39,11 @@ export class ProjectsComponent implements OnInit {
     this.selectProject(null);
   }
 
+  deleteProject(project) {
+    this.projectsService.delete(project.id)
+      .subscribe(results => this.getProjects()); // rehydrate
+  }
+
   // is fired when basically all of the data or
   // all of the bindings for a component has been satisfied
   // is the safest place to put something (async assingment?)

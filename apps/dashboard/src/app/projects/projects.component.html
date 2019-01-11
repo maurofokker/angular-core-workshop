@@ -22,7 +22,9 @@
               <!-- PROJECT DETAILS -->
               {{project.details}}
             </p>
-            <button mat-icon-button>
+            <!-- after call deleteProject(project) it calls $event.stopImmediatePropagation() -->
+            <!-- bc if not it will bubble up and do the (click)="selectProject(project)" above in list -->
+            <button mat-icon-button (click)="deleteProject(project);$event.stopImmediatePropagation()">
               <mat-icon>close</mat-icon>
             </button>
           </mat-list-item>
