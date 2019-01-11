@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectsService, Project } from '@workshop/core-data';
 
 @Component({
   selector: 'app-projects',
@@ -8,46 +9,32 @@ import { Component, OnInit } from '@angular/core';
 export class ProjectsComponent implements OnInit {
 
   // any property declaration is available to be bound to the template
-  projects = [
-    {
-      id: '1',
-      title: 'Project One',
-      details: 'This is a sample project',
-      percentComplete: 20,
-      approved: false,
-    },
-    {
-      id: '2',
-      title: 'Project Two',
-      details: 'This is a sample project',
-      percentComplete: 40,
-      approved: false,
-    },
-    {
-      id: '3',
-      title: 'Project Three',
-      details: 'This is a sample project',
-      percentComplete: 100,
-      approved: true,
-    }
-  ];
+  projects: Project[];
 
   primaryColorPropertyBinding = "Orange";
 
-  selectedProject;
+  selectedProject: Project;
 
-  constructor() { }
+  constructor(private projectsService: ProjectsService) { }
 
   selectProject(project) {
     this.selectedProject = project;
     console.log('SELECTED PROJECT', project);
   }
 
+  getProjects() {
+    this.projects = this.projectsService.all();
+  }
+
   cancel() {
     this.selectProject(null);
   }
 
+  // is fired when basically all of the data or
+  // all of the bindings for a component has been satisfied
+  // is the safest place to put something (async assingment?)
   ngOnInit() {
+    this.getProjects();
   }
 
 }

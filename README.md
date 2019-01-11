@@ -100,3 +100,21 @@ Lo anterior calzaría con un componente feature (feature component) y cuando es 
 
 * Se debe recordar importar los módulos creados en el scope de la aplicación dashboard o sea en archivo `app.module.ts`
 * Al usar los componentes en el padre `app.component.html` se debe considerar que los componentes se deben exportar dentro de su propio modulo `xxx.module.ts` ejemplo `home.module.ts` agregar como `exports`
+
+## Services
+
+To generate services with `angular-cli`
+  `ng g s projects/projects --project=core-data`
+  - `ng g`: angular client generate
+  - `s`: service
+  - `projects/projects`: in folder projects create service projects
+  - `--project=code-data`: inside shared lib core-data project
+
+## Interfaces
+
+To generate interfaces with `angular-cli`
+  `ng g i projects/project --project=core-data`
+  - `ng g`: angular client generate
+  - `i`: interface
+  - `projects/project`: in folder projects create singular interface project
+  - `--project=code-data`: inside shared lib core-data project  
