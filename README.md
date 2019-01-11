@@ -119,7 +119,7 @@ To generate interfaces with `angular-cli`
   - `projects/project`: in folder projects create singular interface project
   - `--project=code-data`: inside shared lib core-data project  
 
-## Concurrently
+## Concurrently execution
 
 - Allows to run multiple commands concurrently. So we can run a json-server and the app server
 - Install in dev mode
@@ -154,4 +154,20 @@ To generate interfaces with `angular-cli`
 
 * Problem until commit `81bd82f` is that when something is typed in the form (title and detail) it will update the form title and the project selected in the list of projects this is the shared mutable state problem.
   * You have for instance, and object in a service that you are passing by reference across two components, and component A need that this object can never go up to past 10, but then component B turn this object to 11... that is a problem
-* Solution:
+* Solution: uso de arquitectura de componentes
+
+
+## Arquitectura de componentes
+
+- Se refiere a cómo se estructuran los componentes
+- Uso de property y event binding customizados (`@Input()` y `@Output()`)
+- Lo anterior permite estructurar en componentes hijos y componentes padres y pasar datos entre ellos
+- `Container Component` sería uno padre y `Presentational Container` un hijo, la lógica debiera estar en uno padre
+
+### Generar componentes con angular-cli
+
+- Comando:
+  `ng g c projects/projects-list`
+  * `ng g`: genera
+  * `c`: componente
+  * `projects/project-list`: dentro de directorio `projects` genera componente `project-list`
