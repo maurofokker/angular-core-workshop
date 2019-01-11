@@ -162,7 +162,12 @@ To generate interfaces with `angular-cli`
 - Se refiere a cómo se estructuran los componentes
 - Uso de property y event binding customizados (`@Input()` y `@Output()`)
 - Lo anterior permite estructurar en componentes hijos y componentes padres y pasar datos entre ellos
-- `Container Component` sería uno padre y `Presentational Container` un hijo, la lógica debiera estar en uno padre
+- `Container Component` sería uno padre y `Presentation Component` un hijo, la lógica debiera estar en uno padre
+- `Componente de presentación`: componente diseñado para presentación y capturando eventos y delegarlos hacia arriba (padre)
+- `Componente contenedor`: se encarga de los detalles de implementación de dónde proviene los datos y para controlar los eventos que le lleguen para delegarlos con fuentes externas. En funcion del estado de la aplicación.
+- Los componentes tienen dos responsabilidades principales
+  1. Consumir los datos que necesita para satisfacer el template
+  2. Capturar eventos a nivel de componente o local, o capturarlos local y luego enviarlos al padre
 
 ### Generar componentes con angular-cli
 
@@ -253,5 +258,103 @@ To generate interfaces with `angular-cli`
       <app-projects-list [projects]="projects$ | async"></app-projects-list>
     </div>
     <!-- PROJECT DETAILS -->
+  </div>
+  ```
+
+### @Output()
+
+- Permite pasar data desde un componente hijo  `projects-list.component.ts` a uno padre  `projects.component.ts`
+  - Por ejemplo en el caso de que ocurre un evento en el componente de presentación y se debe pasar al componente padre para que realice la lógica
+- Utiliza el método customizado `event binding`
+- Al crear un `output` se inicializa como un nuevo `EventEmitter`
+- Componente hijo
+  ```typescript
+  export class ProjectsListComponent {
+
+    // this is a property in this class that we are allowing external forces
+    // or mechanisms to basically satisfy this particular property
+    @Input() projects: Project[];
+    @Input() readonly = false;
+
+    // name is in past because is something that happened in the child component
+    @Output() selected = new EventEmitter();
+    @Output() deleted = new EventEmitter();
+
+  }
+  ```
+- Template hijo
+  ```html
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h1>Projects</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!--
+      <pre>{{projects | json}}</pre>
+      -->
+      <mat-list>
+        <mat-list-item
+          *ngFor="let project of projects"
+          (click)="selected.emit(project)"
+        >
+          <h3  mat-line>
+            <!-- PROJECT DETAILS -->
+            {{project.title}}
+          </h3>
+          <p mat-line>
+            <!-- PROJECT DETAILS -->
+            {{project.details}}
+          </p>
+          <!-- after call deleteProject(project) it calls $event.stopImmediatePropagation() -->
+          <!-- bc if not it will bubble up and do the (click)="selectProject(project)" above in list -->
+          <button
+            *ngIf="!readonly" mat-icon-button
+            (click)="deleted.emit(project);$event.stopImmediatePropagation()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  ```
+- Componente padre
+  ```typescript
+  export class ProjectsComponent implements OnInit {
+
+    // any property declaration is available to be bound to the template
+    // by convention observable streams use $ sufix
+    projects$; //: Observable<Project[]>;
+
+    primaryColorPropertyBinding = "Orange";
+
+    selectedProject: Project;
+
+    constructor(private projectsService: ProjectsService) { }
+
+    selectProject(project) {
+      this.selectedProject = project;
+      console.log('SELECTED PROJECT', project);
+    }
+
+    deleteProject(project) {
+      this.projectsService.delete(project.id)
+        .subscribe(results => this.getProjects()); // rehydrate
+    }
+
+    // other methods and implementations
+
+  }
+  ```
+- Template padre
+  ```html
+  <div class="col-50">
+    <app-projects-list
+      [projects]="projects$ | async"
+      (selected)="selectProject($event)"
+      (deleted)="deleteProject($event)">
+    </app-projects-list>
   </div>
   ```

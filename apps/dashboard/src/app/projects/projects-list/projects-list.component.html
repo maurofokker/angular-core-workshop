@@ -10,7 +10,10 @@
     <pre>{{projects | json}}</pre>
     -->
     <mat-list>
-      <mat-list-item  *ngFor="let project of projects">
+      <mat-list-item
+        *ngFor="let project of projects"
+        (click)="selected.emit(project)"
+      >
         <h3  mat-line>
           <!-- PROJECT DETAILS -->
           {{project.title}}
@@ -21,7 +24,10 @@
         </p>
         <!-- after call deleteProject(project) it calls $event.stopImmediatePropagation() -->
         <!-- bc if not it will bubble up and do the (click)="selectProject(project)" above in list -->
-        <button *ngIf="!readonly" mat-icon-button >
+        <button
+          *ngIf="!readonly" mat-icon-button
+          (click)="deleted.emit(project);$event.stopImmediatePropagation()"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </mat-list-item>
