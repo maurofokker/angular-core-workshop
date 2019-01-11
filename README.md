@@ -118,3 +118,11 @@ To generate interfaces with `angular-cli`
   - `i`: interface
   - `projects/project`: in folder projects create singular interface project
   - `--project=code-data`: inside shared lib core-data project  
+
+## Concurrently
+
+- Allows to run multiple commands concurrently. So we can run a json-server and the app server
+- Install in dev mode
+  `npm install concurrently --save-dev`
+- Script in `package.json`
+  `"server:all": "concurrently \"npm run server\" \"ng serve\"",`

@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@workshop/material';
 import { AppRoutingModule } from './app-routing.module';
 import { UiLoginModule } from '@workshop/ui-login';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,6 +16,7 @@ import { UiLoginModule } from '@workshop/ui-login';
     BrowserModule,
     NxModule.forRoot(),
     BrowserAnimationsModule,
+    HttpClientModule,
     MaterialModule,
     // delete from here: HomeModule, ProjectsModule and CustomersModule bc they are lazy loaded
     UiLoginModule,
