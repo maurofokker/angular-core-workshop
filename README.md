@@ -377,3 +377,7 @@ To generate interfaces with `angular-cli`
     </app-projects-list>
   </div>
   ```
+
+## Test
+
+* `npm test dashboard`

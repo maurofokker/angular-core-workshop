@@ -13,7 +13,7 @@ export class ProjectsComponent implements OnInit {
   // by convention observable streams use $ sufix
   projects$; //: Observable<Project[]>;
 
-  primaryColorPropertyBinding = "Orange";
+  primaryColorPropertyBinding = "orange";
 
   selectedProject: Project;
 
